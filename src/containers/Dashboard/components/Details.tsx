@@ -8,23 +8,30 @@ interface Props {
 }
 
 function Details({ users }: Props) {
-  const [selectedUserId, setSelectedUserId] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState(0);
 
   const handleOnClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    setSelectedUserId(e.currentTarget.dataset.id!);
+    if (e.currentTarget.dataset.id) {
+      setSelectedUserId(parseInt(e.currentTarget.dataset.id));
+    }
   };
 
   const { isLoading, data, isFetching } = useQuery(
     ["user", selectedUserId],
     async () => {
-      if (!selectedUserId) {
-        return undefined;
-      }
-
-      const data = await getUser(parseInt(selectedUserId));
-      return data;
+      const user = await getUser(selectedUserId);
+      return user;
     },
-    { keepPreviousData: true } // ? react query is not cache the data
+    {
+      keepPreviousData: true,
+      enabled: Boolean(selectedUserId),
+      staleTime: 30000,
+    }
+    // https://react-query.tanstack.com/guides/caching
+    // react query cache the data by default 3min, and mark it stale
+    // but at same time it will do a background refetch.
+    // so the isLoading is not shown and the isFetching flag is showing
+    // set enabled to true to fix the undefine check and set staleTime to 3 min
   );
 
   return (
