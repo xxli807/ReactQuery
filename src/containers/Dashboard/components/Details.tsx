@@ -22,7 +22,7 @@ function Details({ users }: Props) {
       }
 
       const data = await getUser(parseInt(selectedUserId));
-      return data.data;
+      return data;
     },
     { keepPreviousData: true } // ? react query is not cache the data
   );
@@ -40,7 +40,7 @@ function Details({ users }: Props) {
           );
         })}
       </ul>
-      <div>{isFetching ? "isFetching..." : ""}</div>
+      +<div>{isFetching ? "isFetching..." : ""}</div>
       <div>{isLoading ? "loading..." : ""}</div>
       <div>{data?.email}</div>
     </>

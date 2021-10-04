@@ -17,7 +17,7 @@ function DashboardContainer() {
       <div>DashboardContainer</div>
       <button onClick={() => setShowDetail(!showDetail)}>Show Detail</button>
 
-      {showDetail ? <Details users={data?.data} /> : null}
+      {showDetail ? <Details users={data} /> : null}
     </>
   );
 }
